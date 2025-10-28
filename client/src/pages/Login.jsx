@@ -5,12 +5,12 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/api/auth/login", { email, password });
-      localStorage.setItem("token", data.token);
+      const { data } = await axios.post("http://localhost:5000/api/auth/login", { email, password });
       alert("Login successful!");
+      localStorage.setItem("token", data.token);
     } catch (err) {
       alert("Login failed!");
     }
@@ -18,13 +18,15 @@ export default function Login() {
 
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-80">
+      <form onSubmit={handleLogin} className="bg-white p-6 rounded-lg shadow-md w-80">
         <h2 className="text-xl font-bold mb-4 text-center">CRM Login</h2>
         <input
           className="border w-full p-2 mb-3"
+          type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <input
           className="border w-full p-2 mb-3"
@@ -32,6 +34,7 @@ export default function Login() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <button className="bg-blue-600 text-white w-full py-2 rounded">Login</button>
       </form>

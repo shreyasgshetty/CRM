@@ -1,6 +1,8 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import CompanyRegister from "./pages/Register";
+import AdminLogin from "./pages/AdminLogin";
+import EmployeeLogin from "./pages/EmployeeLogin";
 import "./App.css";
 
 function App() {
@@ -8,12 +10,14 @@ function App() {
     <Router>
       
 
+      {/* Routes */}
       <div className="mt-4">
         <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CompanyRegister />} />
-          {/* Optional default route */}
-          <Route path="*" element={<Login />} />
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/employee" element={<EmployeeLogin />} />
         </Routes>
       </div>
     </Router>

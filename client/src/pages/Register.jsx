@@ -25,7 +25,7 @@ export default function CompanyRegister() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/company/register",
+        "http://localhost:5001/api/company/register",
         formData
       );
 

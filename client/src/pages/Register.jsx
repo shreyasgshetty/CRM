@@ -25,9 +25,11 @@ export default function CompanyRegister() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/company/register",
+        "http://localhost:5001/api/company/register",
         formData
       );
+      console.log("Submitting formData:", formData);
+
 
       setToast({
         message: "✅ Registration successful! Waiting For Approval...",

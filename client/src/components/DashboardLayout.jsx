@@ -11,14 +11,14 @@ export default function DashboardLayout() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login-business");
+      navigate("/login");
     }
   }, [navigate]);
 
   // 🚪 Logout Function
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login-business");
+    navigate("/login");
   };
 
   const menuItems = [

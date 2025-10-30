@@ -6,6 +6,10 @@ import BusinessLogin from "./pages/BusinessLogin";
 import DashboardLayout from "./components/DashboardLayout";
 import AddEmployee from "./pages/AddEmployee";
 import "./App.css";
+import AdminLayout from "./components/AdminLayout";
+import AdminDashboard from "./pages/AdminDashboard";
+import CRMApproval from "./pages/CRMApproval";
+import ApprovedCompanies from "./pages/ApprovedCompanies";
 
 function App() {
   return (
@@ -27,6 +31,12 @@ function App() {
             <Route path="employees" element={<AddEmployee />} />
             {/* You can later add: customers, tickets, analytics, etc. */}
           </Route>
+          {/* Admin Layout */}
+        <Route path="/admin-layout" element={<AdminLayout />}>
+          <Route path="/admin-layout/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin-layout/approvals" element={<CRMApproval />} />
+          <Route path="/admin-layout/approved-companies" element={<ApprovedCompanies />} />
+        </Route>
         </Routes>
       </div>
     </Router>

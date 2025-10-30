@@ -19,7 +19,7 @@ export const loginBusinessManager = async (req, res) => {
     const user = await User.findOne({ email, role: "BusinessManager" });
     if (!user) return res.status(404).json({ message: "Business Manager not found" });
 
-    if (user.status !== "Active") {
+    if (user.status !== "active") {
       return res.status(403).json({ message: "Account not active or not approved yet" });
     }
 

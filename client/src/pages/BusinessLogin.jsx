@@ -12,7 +12,7 @@ export default function BusinessLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5001/api/auth/login-business", {
+      const res = await axios.post("http://localhost:5001/api/auth/login", {
         email,
         password,
       });
@@ -24,7 +24,7 @@ export default function BusinessLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">
+    <div className="fixed inset-0 flex bg-gray-900 flex items-center justify-center text-white">
       <div className="bg-gray-800 p-8 rounded-xl w-96 shadow-lg">
         <h2 className="text-2xl font-semibold mb-6 text-center">Business Manager Login</h2>
         {error && <p className="text-red-400 text-center mb-4">{error}</p>}

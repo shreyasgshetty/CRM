@@ -28,7 +28,7 @@ export default function DashboardLayout() {
   ];
 
   return (
-    <div className="min-h-screen flex bg-gray-900 text-gray-100">
+    <div className="fixed inset-0 flex bg-gray-900 text-gray-100">
       {/* Sidebar */}
       <div
         className={`${

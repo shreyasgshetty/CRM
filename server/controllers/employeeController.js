@@ -1,39 +1,32 @@
-import User from "../models/User.js";
-import Company from "../models/Company.js";
+// server/controllers/employeeController.js
+import Employee from "../models/Employee.js";
 import bcrypt from "bcryptjs";
 
-// Add new employee (Business Manager only)
+// ➕ Add new Employee
 export const addEmployee = async (req, res) => {
   try {
-    console.log("🟢 Received employee data:", req.body); // ✅ Add this line
+    const { name, email, password, department, companyId } = req.body;
 
-    const { name, email, password, designation, role, companyId } = req.body;
-
-    // Validate required fields
-    if (!name || !email || !password || !designation || !role || !companyId) {
-      console.log("⚠️ Missing field(s):", { name, email, password, designation, role, companyId });
+    if (!name || !email || !password || !department || !companyId) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Check for existing user
-    const existing = await User.findOne({ email });
+    // Check existing
+    const existing = await Employee.findOne({ email });
     if (existing) {
-      return res.status(400).json({ message: "Employee with this email already exists" });
+      return res.status(400).json({ message: "Employee already exists" });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     // Create new employee
-    const newEmployee = new User({
+    const newEmployee = new Employee({
       name,
       email,
-      password: hashedPassword,
-      designation,
-      role,
+      password,
+      department,
       companyId,
-      status: "active",
-      type: "employee",
+      role: "Employee",
+      ticketsHandled: 0,
+      status: "Active",
     });
 
     await newEmployee.save();
@@ -48,15 +41,14 @@ export const addEmployee = async (req, res) => {
   }
 };
 
-
-// Get all employees of a company
+// 📋 Get all employees
 export const getEmployees = async (req, res) => {
   try {
     const { companyId } = req.query;
-    const employees = await User.find({ companyId, type: "employee" });
+    const employees = await Employee.find({ companyId });
     res.json(employees);
   } catch (err) {
-    console.error("Error fetching employees:", err);
+    console.error("❌ Error fetching employees:", err);
     res.status(500).json({ message: "Server error" });
   }
 };

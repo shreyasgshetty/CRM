@@ -1,20 +1,31 @@
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
 
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, unique: true, required: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ["admin", "manager", "employee"], default: "employee" },
-  companyId: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
-  isActive: { type: Boolean, default: true }
-}, { timestamps: true });
-
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    designation: { type: String },
+    role: {
+      type: String,
+      enum: ["Admin", "Manager", "Employee", "Support", "BusinessManager"], // ✅ Added "Support"
+      default: "Employee",
+    },
+    status: {
+      type: String,
+      enum: ["active", "inactive"], // ✅ made lowercase
+      default: "active",
+    },
+    type: {
+      type: String,
+      enum: ["employee", "company", "admin"], // ✅ as per your logic
+    },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+    },
+  },
+  { timestamps: true }
+);
 
 export default mongoose.model("User", userSchema);

@@ -4,6 +4,8 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
+import employeeRoutes from "./routes/employeeRoutes.js";
+
 
 dotenv.config();
 connectDB();
@@ -13,6 +15,8 @@ app.use(express.json());
 app.use(cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/company", companyRoutes);
+app.use("/api/employees", employeeRoutes);
+
 
 // Sample route
 app.get("/", (req, res) => res.send("CRM API is running..."));

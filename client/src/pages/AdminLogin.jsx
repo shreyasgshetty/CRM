@@ -12,7 +12,7 @@ export default function AdminLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("http://localhost:5001/api/auth/login", {
+      const { data } = await axios.post("http://localhost:5001/api/auth/admin", {
         email,
         password,
       });

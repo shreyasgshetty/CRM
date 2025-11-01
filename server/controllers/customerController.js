@@ -1,7 +1,6 @@
-// server/controllers/customerController.js
 import Customer from "../models/Customer.js";
 import User from "../models/User.js";
-import Employee from "../models/Employee.js";
+import Employee from "../models/Employee.js"; // Ensure this is imported
 import mongoose from "mongoose";
 
 // Helper to format assigned employees
@@ -242,7 +241,6 @@ export const updateCustomer = async (req, res) => {
     res.status(500).json({ message: "Server error while updating customer" });
   }
 };
-
 
 /**
  * 🟢 Convert Lead → Customer

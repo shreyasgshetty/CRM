@@ -1,6 +1,6 @@
-// server/controllers/employeeController.js
 import Employee from "../models/Employee.js";
 import User from "../models/User.js";
+import Customer from "../models/Customer.js"; // IMPORT Customer model
 import bcrypt from "bcryptjs";
 
 // ➕ Add new Employee (Business Manager only)
@@ -126,6 +126,10 @@ export const updateEmployee = async (req, res) => {
 export const toggleEmployeeStatus = async (req, res) => {
   try {
     const { id } = req.params;
+    const managerId = req.user?.id; // The user performing the action
+    const managerName = req.user?.name || "Business Manager";
+    let affectedCustomersCount = 0; // Initialize count outside the block
+
     const employee = await Employee.findById(id);
     if (!employee) return res.status(404).json({ message: "Employee not found" });
 
@@ -139,8 +143,45 @@ export const toggleEmployeeStatus = async (req, res) => {
       await user.save();
     }
 
+    // --- NEW LOGIC: Cascade Update for Customers ---
+    if (newStatus === "Inactive") {
+      // 1. Find all customers currently assigned to this employee
+      const affectedCustomers = await Customer.find({
+        assignedTo: employee._id,
+        deletedAt: null, // Only update active customers
+      });
+
+      affectedCustomersCount = affectedCustomers.length; // Store the count
+
+      const promises = affectedCustomers.map(async (customer) => {
+        // 2. Remove the employee's ID from the assignedTo array
+        customer.assignedTo = customer.assignedTo.filter(
+          (assignedId) => String(assignedId) !== String(employee._id)
+        );
+
+        // 3. Add an audit trail entry
+        customer.audit.push({
+          action: "assignment_removed",
+          by: managerId,
+          byName: managerName,
+          note: `Removed deactivated employee: ${employee.name} (ID: ${employee._id}).`,
+          at: new Date(),
+        });
+        return customer.save();
+      });
+
+      await Promise.all(promises);
+    }
+    // --- END NEW LOGIC ---
+
     res.json({
-      message: `Employee ${newStatus === "Active" ? "activated" : "deactivated"} successfully`,
+      message: `Employee ${employee.name} ${
+        newStatus === "Active" ? "activated" : "deactivated"
+      } successfully. ${
+        newStatus === "Inactive"
+          ? `Removed from ${affectedCustomersCount} customer assignments.`
+          : ""
+      }`,
       status: newStatus,
     });
   } catch (err) {

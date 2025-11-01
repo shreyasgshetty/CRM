@@ -17,7 +17,7 @@ export default function EmployeeLogin() {
         { email, password }
       );
 
-      if (data.role === "employee") {
+      if (data.role === "Employee") {
         localStorage.setItem("token", data.token);
         setToast({ message: "✅ Employee login successful!", type: "success" });
         setTimeout(() => navigate("/employee/dashboard"), 2000); // redirect after success

@@ -1,3 +1,4 @@
+// server/middleware/authMiddleware.js
 import jwt from "jsonwebtoken";
 
 export const verifyToken = (req, res, next) => {
@@ -11,6 +12,8 @@ export const verifyToken = (req, res, next) => {
     if (err) {
       return res.status(403).json({ message: "Invalid token" });
     }
+
+    // ✅ Attach decoded user info (includes companyId)
     req.user = decoded;
     next();
   });

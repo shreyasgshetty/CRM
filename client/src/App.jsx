@@ -12,6 +12,8 @@ import AdminLayout from "./components/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
 import CRMApproval from "./pages/CRMApproval";
 import ApprovedCompanies from "./pages/ApprovedCompanies";
+import Tickets from "./pages/Tickets";
+import CustomerTickets from "./pages/CustomerTickets";
 
 function App() {
   return (
@@ -27,7 +29,8 @@ function App() {
           <Route path="/manager/dashboard" element={<DashboardLayout />}>
             <Route path="employees" element={<AddEmployee />} />
             <Route path="customers" element={<Customers />} />
-            {/* other manager pages */}
+            <Route path="tickets" element={<Tickets />} />
+            <Route path="customer-tickets" element={<CustomerTickets />} />
           </Route>
 
           <Route path="/admin-layout" element={<AdminLayout />}>

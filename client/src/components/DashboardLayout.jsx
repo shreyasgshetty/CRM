@@ -22,6 +22,7 @@ export default function DashboardLayout() {
     { name: "Employees", icon: <FiUsers />, path: "/manager/dashboard/employees" },
     { name: "Customers", icon: <FiUserPlus />, path: "/manager/dashboard/customers" },
     { name: "Tickets", icon: <FiFileText />, path: "/manager/dashboard/tickets" },
+    { name: "Customer Tickets", icon: <FiFileText />, path: "/manager/dashboard/customer-tickets" },
   ];
 
   return (

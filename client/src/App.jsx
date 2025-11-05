@@ -1,4 +1,3 @@
-// client/src/App.jsx
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import CompanyRegister from "./pages/Register";
 import AdminLogin from "./pages/AdminLogin";
@@ -14,6 +13,7 @@ import CRMApproval from "./pages/CRMApproval";
 import ApprovedCompanies from "./pages/ApprovedCompanies";
 import Tickets from "./pages/Tickets";
 import CustomerTickets from "./pages/CustomerTickets";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 function App() {
   return (
@@ -33,10 +33,18 @@ function App() {
             <Route path="customer-tickets" element={<CustomerTickets />} />
           </Route>
 
-          <Route path="/admin-layout" element={<AdminLayout />}>
-            <Route path="/admin-layout/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin-layout/approvals" element={<CRMApproval />} />
-            <Route path="/admin-layout/approved-companies" element={<ApprovedCompanies />} />
+          {/* ✅ Protected Admin Routes */}
+          <Route
+            path="/admin-layout"
+            element={
+              <AdminProtectedRoute>
+                <AdminLayout />
+              </AdminProtectedRoute>
+            }
+          >
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="approvals" element={<CRMApproval />} />
+            <Route path="approved-companies" element={<ApprovedCompanies />} />
           </Route>
         </Routes>
       </div>

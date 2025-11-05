@@ -4,8 +4,8 @@ import bcrypt from "bcryptjs";
 
 export const getStats = async (req, res) => {
   const totalCompanies = await Company.countDocuments();
-  const approvedCompanies = await Company.countDocuments({ isApproved: true });
-  const totalEmployees = await User.countDocuments({ role: "employee" });
+  const approvedCompanies = await User.countDocuments({ role: "BusinessManager" });
+  const totalEmployees = await User.countDocuments({ role: "Employee" });
   res.json({ totalCompanies, approvedCompanies, totalEmployees });
 };
 

@@ -24,10 +24,11 @@ export const loginBusinessManager = async (req, res) => {
 
     const user = await User.findOne({ email, role: "BusinessManager" });
     if (!user) return res.status(404).json({ message: "Business Manager not found" });
+    
+   if (user.status.toLowerCase() !== "active") {
+  return res.status(403).json({ message: "Account not active or not approved yet" });
+  }
 
-    if (user.status !== "active") {
-      return res.status(403).json({ message: "Account not active or not approved yet" });
-    }
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return res.status(401).json({ message: "Invalid credentials" });

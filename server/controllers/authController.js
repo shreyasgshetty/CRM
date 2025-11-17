@@ -1,5 +1,6 @@
 // server/controllers/authController.js
 import User from "../models/User.js";
+import Employee from "../models/Employee.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
@@ -81,5 +82,42 @@ export const loginUser = async (req, res) => {
   } catch (err) {
     console.error("❌ Error during user login:", err);
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const loginEmployee = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const employee = await Employee.findOne({ email });
+    console.log("Employee:", employee); // debug
+
+    if (!employee)
+      return res.status(404).json({ message: "Employee not found" });
+
+    console.log("Stored Password:", employee.password);
+    console.log("Entered Password:", password);
+
+    const isMatch = await bcrypt.compare(password, employee.password);
+    console.log("Password Match:", isMatch);
+
+    if (!isMatch)
+      return res.status(401).json({ message: "Invalid credentials" });
+
+    const token = jwt.sign(
+      { id: employee._id, role: employee.role, companyId: employee.companyId },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.json({
+      token,
+      role: employee.role,
+      name: employee.name,
+      companyId: employee.companyId,
+    });
+  } catch (err) {
+    console.error("Login Error:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };
